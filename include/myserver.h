@@ -3,7 +3,6 @@
 #include "../server/server_http.hpp"
 #include "../server/client_http.hpp"
 #include <string>
-
 using namespace std;
 
 
@@ -12,14 +11,10 @@ class myserver
   public:
     myserver(int, int);
     ~myserver();
+    typedef void (*voidf)(string);
+    void addContent(string);
+    void mapFunction(string, voidf);
     void runServer();
-    enum pg {POST, GET};
-    typedef void (*voidf)();
-    typedef int (*intf1)(int);
-    void callF(voidf);
-    void callF2(intf1,int);
-    void setF(voidf);
-    //void addRes(pg,string, function);
   private:
     typedef SimpleWeb::Server<SimpleWeb::HTTP> HttpServer;
     typedef SimpleWeb::Client<SimpleWeb::HTTP> HttpClient;
