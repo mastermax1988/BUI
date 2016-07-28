@@ -16,7 +16,7 @@ void server::run()
     tcp::socket socket(io_service);
     acceptor.accept(socket);
     
-    std::string content = "HTTP/1.1 200 OK\r\n\r\n<html><body><a href=\"https://www.google.de\">tolle Suchmaschine</a><iframe src=\"https://wwad.de/~maxi\"></iframe></html>";
+    std::string content = "HTTP/1.1 200 OK\r\n\r\n<html><body><a href=\"https://www.google.de\">tolle Suchmaschine</a></html>";
 
     boost::system::error_code ignored_error;
     boost::asio::write(socket, boost::asio::buffer(content), ignored_error);
