@@ -21,7 +21,7 @@ include_directories(${Boost_INCLUDE_DIR})
 
 find_package(Threads REQUIRED)
 
-#include_directories(.)
+include_directories(./include)
 
 FILE(GLOB mysrc src/*.cc)
 
