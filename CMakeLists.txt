@@ -23,7 +23,7 @@ find_package(Threads REQUIRED)
 
 include_directories(./include)
 
-FILE(GLOB mysrc src/*.cc)
+FILE(GLOB mysrc src/*.cc src/*.cpp)
 
 
 add_executable(bui ${mysrc} main.cc)
