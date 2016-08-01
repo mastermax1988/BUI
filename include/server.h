@@ -11,5 +11,7 @@ class server
     void run();
   private:
     const int port;
+    boost::asio::io_service io_service;
+    
 };
 #endif
