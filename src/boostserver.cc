@@ -23,20 +23,14 @@ tcp::socket& tcp_connection::socket()
 
 void tcp_connection::start()
 {
-  message_ = "HTTP/1.1 200 OK\r\n\r\n<html><body><a href=\"https://www.google.de\">tolle Suchmaschine</a></html>";
+  string con = "<html><body><a href=\"https://www.google.de\">tolle Suchmaschine</a></html>";
+  int conl=con.length();
+  message_ = "HTTP/1.1 200 OK\r\nContent-Length: " + to_string(conl) + "\r\n\r\n" + con;
+
+  boost::asio::async_write(socket_, boost::asio::buffer(message_), boost::bind(&tcp_connection::handle_write, shared_from_this(), boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 
   boost::shared_ptr<boost::array<char, 128>> buf(new boost::array<char, 128>); 
-  //boost::asio::read (socket_, boost::asio::buffer(*buf));
-  //socket_.receive(boost::asio::buffer(*buf));
-  //cout << buf->data() << endl;
-  //cout << socket_.is_open() << endl;
-  
-  socket_.send(boost::asio::buffer(message_));
-  //boost::asio::async_write(socket_, boost::asio::buffer(message_), boost::bind(&tcp_connection::handle_write, shared_from_this(), boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
-  socket_.receive(boost::asio::buffer(*buf));
-  cout << buf->data() << endl;
-
-  //boost::asio::async_read(socket_, boost::asio::buffer(*buf),boost::bind(&tcp_connection::handle_read, shared_from_this(), buf, boost::asio::placeholders::error));
+  boost::asio::async_read(socket_, boost::asio::buffer(*buf),boost::bind(&tcp_connection::handle_read, shared_from_this(), buf, boost::asio::placeholders::error));
 
 }
 
@@ -44,8 +38,6 @@ void tcp_connection::start()
 void tcp_connection::handle_read(boost::shared_ptr<boost::array<char, 128> >buf, boost::system::error_code const&)
 {
   cout << buf->data() << endl;
-  //socket_.close();
-  //boost::asio::async_write(socket_, boost::asio::buffer(message_), boost::bind(&tcp_connection::handle_write, shared_from_this(), boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 }
 
 tcp_connection::tcp_connection(boost::asio::io_service& io_service)  : socket_(io_service)
@@ -55,7 +47,6 @@ tcp_connection::tcp_connection(boost::asio::io_service& io_service)  : socket_(i
 
 void tcp_connection::handle_write(const boost::system::error_code& e/*error*/, size_t i/*bytes_transferred*/)
 {
-  //socket_.close();
 }
 
 
